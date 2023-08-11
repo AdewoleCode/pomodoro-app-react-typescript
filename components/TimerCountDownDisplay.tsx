@@ -20,8 +20,9 @@ const TimerCountDownDisplay: React.FC<Props> = ({ timerDate }) => {
 
 StyleSheet.create({
     timerCountDownText: {
-        fontSize: 23,
-        fontWeight: "800"
+        fontSize: 38,
+        fontWeight: "800",
+        color: "#fff"
     }
 })
 export default TimerCountDownDisplay

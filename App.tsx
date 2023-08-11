@@ -1,16 +1,31 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Button } from 'react-native';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import TimerCountDownDisplay from './components/TimerCountDownDisplay';
+import TimerToggleButton from './components/TimerToggleButton';
 
 export default function App() {
-  const Focus_time_minutes = 0.5 * 60 * 1000
+  const focus_time_minutes = 0.5 * 60 * 1000
   const break_time_minutes = 0.2 * 60 * 500
 
   const [isTimerRunning, setIsTimerRunning] = useState<Boolean>(false)
 
-  const [timerCount, setTimerCount] = useState<number>(Focus_time_minutes)
+  const [timerCount, setTimerCount] = useState<number>(focus_time_minutes)
   const [timerInterval, setTimerInterval] = useState<NodeJS.Timer | null>(null)
+  const [timerMode, setTimerMode] = useState<"Break" | "Focus">("Focus")
+
+  useEffect(() => {
+    if (timerCount === 0) {
+      if (timerMode == ('Break')) {
+        setTimerMode('Focus')
+        setTimerCount(break_time_minutes)
+      } else {
+        setTimerMode('Focus')
+        setTimerCount(focus_time_minutes)
+      }
+      stopTimer()
+    }
+  }, [timerCount])
 
   const StartTimer = () => {
     console.log('timer is starting...');
@@ -27,18 +42,13 @@ export default function App() {
   }
 
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
+    <View style={{
+      ...styles.container,
+      ...{ backgroundColor: timerMode === "Break" ? '#2a9d8f' : '#d95550' },
+    }}>
+      <Text>{timerMode} Time!</Text>
       <StatusBar style="auto" />
-      <Button
-        title={isTimerRunning ? "Stop Timer" : "Start Timer"}
-        onPress={isTimerRunning ? stopTimer : StartTimer}
-      />
-      <Button
-        title='Stop Timer'
-        onPress={stopTimer}
-      />
-
+      <TimerToggleButton isTimerRunning={isTimerRunning} startTimer={StartTimer} stopTimer={stopTimer} />
       <TimerCountDownDisplay timerDate={new Date(timerCount)} />
 
     </View>
@@ -48,7 +58,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: 'red',
     alignItems: 'center',
     justifyContent: 'center',
   },
