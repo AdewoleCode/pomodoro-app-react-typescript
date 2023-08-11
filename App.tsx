@@ -5,8 +5,8 @@ import TimerCountDownDisplay from './components/TimerCountDownDisplay';
 import TimerToggleButton from './components/TimerToggleButton';
 
 export default function App() {
-  const focus_time_minutes = 0.5 * 60 * 1000
-  const break_time_minutes = 0.2 * 60 * 500
+  const focus_time_minutes = 8 * 60 * 1000
+  const break_time_minutes = 2 * 60 * 500
 
   const [isTimerRunning, setIsTimerRunning] = useState<Boolean>(false)
 
